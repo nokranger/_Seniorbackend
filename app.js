@@ -7,6 +7,8 @@ const mongoose = require('mongoose')
 const productRoute = require('./api/routes/product')
 const ordersRoute = require('./api/routes/orders')
 const userRoute = require('./api/routes/user')
+const employeeRoute = require('./api/routes/employee')
+const adminRoute = require('./api/routes/admin')
 
 //connect db
 mongoose.connect('mongodb+srv://nokranger:'+ 
@@ -36,6 +38,8 @@ app.use((req,res,next) =>{
 app.use('/product',productRoute)
 app.use('/orders',ordersRoute)
 app.use('/users',userRoute)
+app.use('/employee',employeeRoute)
+app.use('/admin',adminRoute)
 
 //404 not found
 app.use((req,res,next) => {
