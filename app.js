@@ -9,6 +9,7 @@ const ordersRoute = require('./api/routes/orders')
 const userRoute = require('./api/routes/user')
 const employeeRoute = require('./api/routes/employee')
 const adminRoute = require('./api/routes/admin')
+const chemicalRoute = require('./api/routes/ChemicalTank')
 
 //connect db
 mongoose.connect('mongodb+srv://nokranger:'+ 
@@ -40,6 +41,7 @@ app.use('/orders',ordersRoute)
 app.use('/users',userRoute)
 app.use('/employee',employeeRoute)
 app.use('/admin',adminRoute)
+app.use('/chemicaltank',chemicalRoute)
 
 //404 not found
 app.use((req,res,next) => {
