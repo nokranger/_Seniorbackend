@@ -1,13 +1,83 @@
 //--------------This is nodemodule---------------//
 const express = require('express')
 const route = express.Router()
+const ChemicalTank = require('../models/ChemicalTank')
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+route.use(bodyParser.json())
 
-//--------------This is controller---------------//
-const ChemicalTankController = require('../controllers/ChemicalTank')
+route.get('/get-all-chemical', (req, res) => {
+    ChemicalTank.find()
+    .select('_id date time specific_gravity residual_chemicals temp type_chemical picture')
+    .exec()
+    .then(chemicaltank => {
+        let allchemtank = {
+            count: chemicaltank.length,
+            tankNo: chemicaltank.map(chemicaltanks => {
+                return {
+                    _id: chemicaltanks._id,
+                    date: chemicaltanks.date,
+                    time: chemicaltanks.time,
+                    specific_gravity: chemicaltanks.specific_gravity,
+                    residual_chemicals: chemicaltanks.residual_chemicals,
+                    temp: chemicaltanks.temp,
+                    type_chemical: chemicaltanks.type_chemical,
+                    picture: chemicaltanks.picture,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:8081/'
+                    }
+                }
+            })
+        }
+        res.status(200).json(allchemtank)
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+    })
+})
+route.post('/creat-chemical',(req, res) => {
+    console.log('req is : ', req.body)
+    // {"date" : "060119",
+    // "time" : 123123,"specific_gravity" : "sg1","residual_chemicals" : "rc2","temp" : "t3","type_chemical" : "tc4","picture":"pp"}
+    const chemical = new ChemicalTank({
+        _id: new mongoose.Types.ObjectId(),
+        date: req.body.date,
+        time: req.body.time,
+        specific_gravity: req.body.specific_gravity,
+        residual_chemicals: req.body.residual_chemicals,
+        temp: req.body.temp,
+        type_chemical: req.body.type_chemical,
+        picture: req.body.picture
+    })
+    chemical
+    .save()
+    .then(result => {
+        console.log(result, 'ssss')
+        res.status(200).json({
+            message: 'Create Profuct successfully',
+            createChemTank : {
+                _id: result._id,
+                date: result.date,
+                time: result.time,
+                specific_gravity: result.specific_gravity,
+                residual_chemicals: result.residual_chemicals,
+                temp: result.temp,
+                type_chemical: result.type_chemical,
+                picture: result.picture
+            }
+        })
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err
+        })
+    })
+    console.log(chemical)
+})
 
-// handle incoming get request to orders
-route.get('/',ChemicalTankController.chemicaltank_get_all)
-route.post('/',ChemicalTankController.chemicaltank_create_chemicaltank)
-route.get('/:chemicaltankId',ChemicalTankController.chemicaltank_get_chemicaltank)
-route.delete('/:chemicaltankId',ChemicalTankController.chemicaltank_delete_chemicaltank)
-route.patch('/:chemicaltankId',ChemicalTankController.chemicaltank_update_chemicaltank)
+module.exports = route
