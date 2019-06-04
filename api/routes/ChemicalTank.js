@@ -11,32 +11,35 @@ route.get('/get-all-chemical', (req, res) => {
     .select('_id date time specific_gravity residual_chemicals temp type_chemical picture')
     .exec()
     .then(chemicaltank => {
-        let allchemtank = {
-            count: chemicaltank.length,
-            tankNo: chemicaltank.map(chemicaltanks => {
+            chemicaltank.map(chemicaltanks => {
                 return {
                     _id: chemicaltanks._id,
                     date: chemicaltanks.date,
-                    time: chemicaltanks.time,
                     specific_gravity: chemicaltanks.specific_gravity,
                     residual_chemicals: chemicaltanks.residual_chemicals,
                     temp: chemicaltanks.temp,
                     type_chemical: chemicaltanks.type_chemical,
-                    picture: chemicaltanks.picture,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:8081/'
                     }
                 }
             })
-        }
-        res.status(200).json(allchemtank)
+        res.status(200).json(chemicaltank)
     })
     .catch(err => {
         console.log(err)
         res.status(500).json({
             error: err
         })
+    })
+})
+route.get('/get-last-chemicaltank', (req,res) => {
+    ChemicalTank.find().then((d) => {
+        let lastPos = d.length - 1
+        res.send(d[lastPos])
+    }, (e) => {
+        res.status(400).send(e)
     })
 })
 route.post('/creat-chemical',(req, res) => {
@@ -46,12 +49,10 @@ route.post('/creat-chemical',(req, res) => {
     const chemical = new ChemicalTank({
         _id: new mongoose.Types.ObjectId(),
         date: req.body.date,
-        time: req.body.time,
         specific_gravity: req.body.specific_gravity,
         residual_chemicals: req.body.residual_chemicals,
         temp: req.body.temp,
-        type_chemical: req.body.type_chemical,
-        picture: req.body.picture
+        type_chemical: req.body.type_chemical
     })
     chemical
     .save()
@@ -62,12 +63,10 @@ route.post('/creat-chemical',(req, res) => {
             createChemTank : {
                 _id: result._id,
                 date: result.date,
-                time: result.time,
                 specific_gravity: result.specific_gravity,
                 residual_chemicals: result.residual_chemicals,
                 temp: result.temp,
-                type_chemical: result.type_chemical,
-                picture: result.picture
+                type_chemical: result.type_chemical
             }
         })
     })

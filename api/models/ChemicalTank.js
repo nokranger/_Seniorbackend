@@ -6,10 +6,6 @@ const ChemicalTankSchema = mongoose.Schema({
         require: true,
         default: Date.now
     },
-    time: {
-        type: Number,
-        require: true,
-    },
     specific_gravity: {
         type: Number,
         require: true
@@ -25,10 +21,6 @@ const ChemicalTankSchema = mongoose.Schema({
     type_chemical: {
         type: String,
         require: true
-    },
-    picture: {
-        type: String,
-        require: false
     }
 })
 module.exports = mongoose.model('chemicaltank',ChemicalTankSchema)
