@@ -16,6 +16,7 @@ route.get('/get-all-chemical', (req, res) => {
                     _id: chemicaltanks._id,
                     date: chemicaltanks.date,
                     specific_gravity: chemicaltanks.specific_gravity,
+                    distance: chemicaltanks.distance,
                     residual_chemicals: chemicaltanks.residual_chemicals,
                     temp: chemicaltanks.temp,
                     type_chemical: chemicaltanks.type_chemical,
@@ -42,7 +43,7 @@ route.get('/get-last-chemicaltank', (req,res) => {
         res.status(400).send(e)
     })
 })
-route.post('/creat-chemical',(req, res) => {
+route.post('/post-chemical',(req, res) => {
     console.log('req is : ', req.body)
     // {"date" : "060119",
     // "time" : 123123,"specific_gravity" : "sg1","residual_chemicals" : "rc2","temp" : "t3","type_chemical" : "tc4","picture":"pp"}
@@ -50,6 +51,7 @@ route.post('/creat-chemical',(req, res) => {
         _id: new mongoose.Types.ObjectId(),
         date: req.body.date,
         specific_gravity: req.body.specific_gravity,
+        distance: req.body.distance,
         residual_chemicals: req.body.residual_chemicals,
         temp: req.body.temp,
         type_chemical: req.body.type_chemical
@@ -64,6 +66,7 @@ route.post('/creat-chemical',(req, res) => {
                 _id: result._id,
                 date: result.date,
                 specific_gravity: result.specific_gravity,
+                distance: result.distance,
                 residual_chemicals: result.residual_chemicals,
                 temp: result.temp,
                 type_chemical: result.type_chemical

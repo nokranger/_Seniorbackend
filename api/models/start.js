@@ -10,6 +10,12 @@ const startSchema = mongoose.Schema({
     },
     isTimeOut: {
         type: Boolean
+    },
+    typeChem: {
+        type: String
+    },
+    tankNo: {
+        type: String
     }
 })
 

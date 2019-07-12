@@ -15,6 +15,8 @@ route.post('/post-start',(req, res) => {
     let newStart = new Start({
         status: true,
         isTimeOut: false,
+        typeChem: req.body.typeChem,
+        tankNo: req.body.tankNo
     })
 
     newStart.save().then((d) => {

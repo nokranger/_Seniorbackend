@@ -10,6 +10,10 @@ const ChemicalTankSchema = mongoose.Schema({
         type: Number,
         require: true
     },
+    distance: {
+        type: Number,
+        require: true
+    },
     residual_chemicals: {
         type: Number,
         require: true
